@@ -1,0 +1,71 @@
+<!--    app/templates/login.html
+     Ce template affiche le formulaire de connexion pour les utilisateurs.  
+-->
+     
+{# Étend le template de base pour garder la structure commune (navbar, footer, styles) #}
+{% extends 'base.html' %}
+
+{# Bloc principal de contenu injecté dans base.html #}
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Connexion</h2>
+    {# Titre de la page #}
+
+    <!-- Affiche les messages flash (notifications d’erreur ou succès) -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <!-- Formulaire de connexion -->
+    <form method="POST" action="{{ url_for('auth.login') }}">
+        {{ form.hidden_tag() }}
+        {# Protection CSRF, champs cachés nécessaires pour WTForms #}
+
+        <!-- Champ Email -->
+        <div class="mb-3">
+            {{ form.email.label(class="form-label") }}
+            {# Label stylisé Bootstrap pour le champ email #}
+
+            {{ form.email(class="form-control", placeholder="Votre adresse email") }}
+            {# Input email avec classe Bootstrap et placeholder #}
+
+            {% if form.email.errors %}
+                <div class="text-danger">
+                    {{ form.email.errors[0] }}
+                    {# Affiche la première erreur sur le champ email en rouge #}
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Champ Mot de passe -->
+        <div class="mb-3">
+            {{ form.password.label(class="form-label") }}
+            {# Label stylisé pour le mot de passe #}
+
+            {{ form.password(class="form-control", placeholder="Votre mot de passe") }}
+            {# Input mot de passe avec classe Bootstrap et placeholder #}
+
+            {% if form.password.errors %}
+                <div class="text-danger">
+                    {{ form.password.errors[0] }}
+                    {# Affiche la première erreur sur le champ mot de passe en rouge #}
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Bouton de soumission -->
+        <button type="submit" class="btn btn-primary">Se connecter</button>
+        {# Bouton Bootstrap bleu pour envoyer le formulaire #}
+    </form>
+
+    <!-- Lien vers la page d’inscription pour les nouveaux utilisateurs -->
+    <p class="mt-3">Pas encore inscrit ? <a href="{{ url_for('auth.register') }}">Créer un compte</a></p>
+</div>
+{% endblock %}

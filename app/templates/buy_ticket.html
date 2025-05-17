@@ -1,0 +1,56 @@
+<!--
+    app/templates/buy_ticket.html
+-->
+
+{% extends "base.html" %}
+<!-- Ce template hérite de base.html pour garder la même structure et style -->
+
+{% block title %}Acheter un ticket{% endblock %}
+<!-- Définit le titre de la page -->
+
+{% block content %}
+<div class="container mt-5">
+    <!-- Titre de la page avec une icône Bootstrap -->
+    <h2 class="mb-4"><i class="bi bi-ticket-perforated"></i> Acheter un ticket</h2>
+
+    <!-- Formulaire POST qui envoie les données à la route 'tickets.buy_ticket' -->
+    <form method="POST" action="{{ url_for('tickets.buy_ticket') }}">
+        {{ form.hidden_tag() }}
+        <!-- Champ caché pour CSRF token et autres données de sécurité -->
+
+        <!-- Sélecteur du type de ticket -->
+        <div class="mb-3">
+            <label for="type" class="form-label">Type de ticket</label>
+            {{ form.type(class="form-select", id="type-ticket") }}
+            <!-- Affichage des erreurs de validation du champ type -->
+            {% for error in form.type.errors %}
+                <div class="text-danger">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <!-- Champ pour saisir la durée de validité en jours -->
+        <div class="mb-3" id="validity_container" style="display: none;">
+            <label for="validity_days" class="form-label">Validité (en jours)</label>
+            {{ form.validity_days(class="form-control", id="validity_days", min=1, max=365, placeholder="nombre de jours") }}
+            <!-- Affichage des erreurs de validation du champ validity_days -->
+            {% for error in form.validity_days.errors %}
+                <div class="text-danger">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        
+        <!-- Bouton pour soumettre le formulaire -->
+        <button type="submit" class="btn btn-success">
+            <i class="bi bi-cart-plus"></i> Acheter maintenant
+        </button>
+
+        <!-- Lien pour retourner au tableau de bord sans acheter -->
+        <a href="{{ url_for('dashboard.dashboard') }}" class="btn btn-secondary ms-2">
+            <i class="bi bi-arrow-left"></i> Retour au tableau de bord
+        </a>
+    </form>
+    <!-- inclusion du script javascript pour gérer la validité automatiquement -->
+    <script src="{{ url_for('static', filename='js/ticket.js') }}"></script>
+
+</div>
+{% endblock %}

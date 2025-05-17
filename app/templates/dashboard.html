@@ -1,0 +1,130 @@
+<!-- app/templates/dashboard.html -->
+{% extends "base.html" %}
+<!-- On hérite de la structure générale depuis base.html -->
+
+{% block title %}Dashboard - Bus App{% endblock %}
+<!-- Définition du titre de la page dans l’onglet du navigateur -->
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h2><i class="bi bi-speedometer2"></i> Tableau de bord</h2>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Carte pour acheter un nouveau ticket -->
+    <div class="col-md-4 mb-4">
+        <div class="card text-white bg-primary h-100">
+            <div class="card-body text-center">
+                <h1 class="display-4"><i class="bi bi-ticket-perforated"></i></h1>
+                <h5 class="card-title">Acheter un nouveau ticket</h5>
+                <a href="{{ url_for('tickets.buy_ticket') }}" class="btn btn-light mt-3">
+                    <i class="bi bi-plus-circle"></i> Acheter
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Affichage des tickets sous forme de cartes -->
+    <div class="col-md-8">
+      {% if tickets %}
+      <div class="row">
+          {% for ticket in tickets %}
+          <div class="col-md-6 mb-4">
+              <div class="card h-100 border {% if ticket.get('expiré') %}border-danger{% elif ticket.get('valide') %}border-success{% else %}border-secondary{% endif %}">
+                  <div class="card-body d-flex flex-column">
+                      <h5 class="card-title text-center">
+                          Ticket {{ ticket['type']|capitalize }}
+                      </h5>
+                      <p class="card-text text-center text-muted">
+                          Acheté le {{ ticket['date_achat'].strftime('%d/%m/%Y à %H:%M') }}
+                      </p>
+
+                      <!-- Badge pour afficher le statut des ticket -->
+                      <div class="text-center mb-3">
+                          {% if ticket.get('expiré') %}
+                              <span class="badge bg-danger">Expiré</span>
+                          {% elif ticket.get('valide') %}
+                              <span class="badge bg-success">Valide</span>
+                          {% else %}
+                              <span class="badge bg-secondary">Non validé</span>
+                          {% endif %}
+                      </div>
+                      
+                      <!-- Infos supplémentaires pour tickets validés -->
+                      {% if ticket.get('valide') %}
+                      <ul class="list-unstyled text-center small mb-3">
+                          <li>Validé le : {{ ticket['date_validation'].strftime('%d/%m/%Y à %H:%M') }}</li>
+                          <li>Expire le : {{ ticket['heure_expiration'].strftime('%d/%m/%Y à %H:%M') }}</li>
+                          <li>
+                              Durée : 
+                              {% if ticket['type'] == 'horaire' %}
+                                  1 heure
+                              {% elif ticket['type'] == 'journalier' %}
+                                  1 jour
+                              {% elif ticket['type'] == 'semaine' %}
+                                  7 jours
+                              {% elif ticket['type'] == 'mensuel' %}
+                                  30 jours
+                              {% elif ticket['type'] == 'annuel' %}
+                                  365 jours
+                              {% elif ticket['type'] == 'personnalisé' %}
+                                  {{ ticket.get('validity_days', '?') }} jours
+                              {% else %}
+                                  Inconnue
+                              {% endif %}
+                          </li>
+                      </ul>
+                      {% endif %}
+
+                      <!-- QR Code si disponible -->
+                      {% if ticket.get('qr_code_path') %}
+                      <div class="text-center mb-3">
+                          <img src="{{ url_for('static', filename=ticket['qr_code_path'].split('static/')[-1]) }}" alt="QR Code" width="80">
+                      </div>
+                      {% else %}
+                        <p>QR Code non disponible</p>
+
+                      {% endif %}
+
+                     <!-- Actions applicable sur un ticket -->
+                        {% if not ticket.get('valide') and not ticket.get('expiré') %}
+                        <form action="{{ url_for('tickets.valider_ticket', ticket_id=ticket['_id']) }}" method="POST" class="mt-auto">
+                            {{ forms[ticket['_id']|string].hidden_tag() }}
+                            <button type="submit" class="btn btn-success btn-sm w-100 mb-2">
+                                <i class="bi bi-check-circle"></i> Valider
+                            </button>
+                        </form>
+
+                        <form action="{{ url_for('tickets.annuler_ticket', ticket_id=ticket['_id']) }}" method="POST"
+                            onsubmit="return confirm('Voulez-vous vraiment annuler ce ticket ?');">
+                            {{ forms[ticket['_id']|string].csrf_token }}
+                            <button type="submit" class="btn btn-danger btn-sm w-100">
+                                <i class="bi bi-x-circle"></i> Annuler
+                            </button>
+                        </form>
+
+                        {% elif ticket.get('expiré') %}
+                        <form action="{{ url_for('tickets.supprimer_ticket', ticket_id=ticket['_id']) }}" method="POST"
+                            onsubmit="return confirm('Voulez-vous vraiment supprimer ce ticket expiré ?');">
+                            {{ forms[ticket['_id']|string].csrf_token }}
+                            <button type="submit" class="btn btn-outline-danger btn-sm w-100 mt-auto">
+                                <i class="bi bi-trash"></i> Supprimer
+                            </button>
+                        </form>
+                        {% endif %}
+
+                  </div>
+              </div>
+          </div>
+          {% endfor %}
+      </div>
+      {% else %}
+      <div class="alert alert-info">
+          <i class="bi bi-info-circle"></i> Vous n'avez pas encore de tickets.
+      </div>
+      {% endif %}
+  </div>
+</div>
+{% endblock %}

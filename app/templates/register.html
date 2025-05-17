@@ -1,0 +1,76 @@
+<!-- app/templates/register.html
+    Ce template affiche le formulaire d'inscription pour les nouveaux utilisateurs.
+-->
+
+<!-- Hérite du template de base pour garder la structure commune (navbar, footer, styles) -->
+{% extends 'base.html' %}
+
+
+{% block title %}Inscription - Ticket Bus{% endblock %}
+
+<!-- Bloc principal de contenu injecté dans base.html -->
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+
+        <!-- Conteneur principal sous forme de carte avec ombre et bord arrondi -->
+        <div class="card shadow rounded">
+            <div class="card-body">
+                <h3 class="card-title mb-4 text-center">Créer un compte</h3>
+
+                <!-- Affichage des messages flash (succès, erreurs, etc.) -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <!-- Formulaire d'inscription -->
+                <form method="POST">
+                    {{ form.hidden_tag() }}  {# Token CSRF pour la sécurité #}
+
+                    <!-- Champ Nom complet -->
+                    <div class="mb-3">
+                        {{ form.name.label(class="form-label") }}
+                        {{ form.name(class="form-control", placeholder="Entrez votre nom complet") }}
+                    </div>
+
+                    <!-- Champ Email -->
+                    <div class="mb-3">
+                        {{ form.email.label(class="form-label") }}
+                        {{ form.email(class="form-control", placeholder="Entrez votre adresse email") }}
+                    </div>
+
+                    <!-- Champ Mot de passe -->
+                    <div class="mb-3">
+                        {{ form.password.label(class="form-label") }}
+                        {{ form.password(class="form-control", placeholder="Entrez votre mot de passe") }}
+                    </div>
+
+                    <!-- Champ Confirmation mot de passe -->
+                    <div class="mb-3">
+                        {{ form.confirm_password.label(class="form-label") }}
+                        {{ form.confirm_password(class="form-control", placeholder="Confirmez votre mot de passe") }}
+                    </div>
+
+                    <!-- Bouton de soumission du formulaire -->
+                    <div class="d-grid">
+                        {{ form.submit(class="btn btn-primary") }}
+                    </div>
+                </form>
+
+                <!-- Lien vers la page de connexion si l'utilisateur a déjà un compte -->
+                <p class="mt-3 text-center">
+                    Déjà un compte ? <a href="{{ url_for('auth.login') }}">Se connecter</a>
+                </p>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

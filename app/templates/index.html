@@ -1,0 +1,90 @@
+<!-- app/templates/index.html -->
+{% extends 'base.html' %}
+{# Hérite de la base commune qui contient le header, footer, navbar, etc. #}
+
+{% block title %}Accueil - Bus App{% endblock %}
+{# Titre de la page dans l’onglet du navigateur #}
+
+{% block content %}
+<!-- Section de bienvenue avec image de fond -->
+<header class="bg-dark text-white text-center py-5" style="background: url('/static/img/bus-bg.jpg') center/cover no-repeat;">
+    {# En-tête sombre avec texte blanc, centré, avec padding vertical #}
+    {# L'image de fond est placée avec CSS en arrière-plan #}
+    
+    <div class="container">
+        <h1 class="display-4 fw-bold">Bienvenue sur Bus App</h1>
+        {# Gros titre d’accueil #}
+        
+        <p class="lead">Achetez, gérez et validez vos tickets de bus rapidement et en toute sécurité.</p>
+        {# Petite description sous le titre #}
+        
+        <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-lg m-2">S'inscrire</a>
+        {# Bouton principal pour s’inscrire #}
+        
+        <a href="{{ url_for('auth.login') }}" class="btn btn-outline-light btn-lg m-2">Se connecter</a>
+        {# Bouton secondaire pour se connecter #}
+    </div>
+</header>
+
+<!-- Section avec des fonctionnalités -->
+<section class="py-5 bg-light">
+    {# Section claire avec padding vertical #}
+    
+    <div class="container">
+        <div class="row text-center">
+            {# Grille Bootstrap avec 3 colonnes, texte centré #}
+            
+            <!-- Fonction 1 -->
+            <div class="col-md-4 mb-4">
+                {# Chaque carte prend 1/3 de la largeur sur medium et plus, avec marge basse #}
+                <div class="card h-100 shadow-sm border-0">
+                    {# Carte avec ombre légère, sans bordure, qui remplit la hauteur disponible #}
+                    
+                    <div class="card-body">
+                        <i class="bi bi-ticket-perforated display-4 text-primary"></i>
+                        {# Icône ticket en grand format et couleur primaire #}
+                        
+                        <h5 class="card-title mt-3">Achetez vos tickets</h5>
+                        {# Titre de la fonctionnalité #}
+                        
+                        <p class="card-text">Commandez vos tickets en ligne en quelques clics. Paiement sécurisé.</p>
+                        {# Description courte #}
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Fonction 2 -->
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body">
+                        <i class="bi bi-folder2-open display-4 text-success"></i>
+                        {# Icône dossier ouvert en vert #}
+                        
+                        <h5 class="card-title mt-3">Gérez vos trajets</h5>
+                        <p class="card-text">Visualisez et gérez l’historique de vos achats et trajets en temps réel.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Fonction 3 -->
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body">
+                        <i class="bi bi-shield-check display-4 text-warning"></i>
+                        {# Icône bouclier en orange #}
+                        
+                        <h5 class="card-title mt-3">Voyagez sereinement</h5>
+                        <p class="card-text">Profitez d’un système sécurisé pour valider vos tickets en un clic.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer rapide -->
+<footer class="text-center py-3 text-muted small">
+    &copy; {{ current_year }} Bus App. Tous droits réservés.
+    {# Pied de page simple avec texte centré, gris clair et petite taille #}
+</footer>
+{% endblock %}

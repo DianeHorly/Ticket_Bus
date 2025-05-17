@@ -1,0 +1,32 @@
+services:
+  flask_app:
+    build: .  # Construire l'image à partir du Dockerfile de ce dossier
+    ports:
+      - "5000:5000"  # Redirige le port 5000 de ta machine vers le container
+    depends_on:
+      - mongo
+      - mosquitto
+    environment:
+      - MONGO_URI=mongodb://mongo:27017  # Variable d'environnement pour se connecter à Mongo
+    #volumes:
+    #  - .:/app  # Permet de voir en direct tes changements (hot reload avec Flask si activé)
+    command: ["python", "run.py"]  # Commande pour démarrer Flask (remplacera le CMD du Dockerfile)
+
+  mongo:
+    image: mongo:latest  # Utiliser l'image officielle de MongoDB
+    ports:
+      - "27017:27017"  # Expose MongoDB sur ton PC (optionnel, utile pour connecter Compass ou Robo 3T)
+    volumes:
+      - mongo_data:/data/db  # Stockage persistant pour MongoDB
+
+  mosquitto:
+    image: eclipse-mosquitto  # Utiliser l'image officielle du broker MQTT
+    ports:
+      - "1883:1883"  # Port MQTT standard
+      - "9001:9001"  # Port WebSocket
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf  # Fichier de config personnalisé
+
+# Définir des volumes pour que les données MongoDB soient conservées même si le container est supprimé
+volumes:
+  mongo_data:

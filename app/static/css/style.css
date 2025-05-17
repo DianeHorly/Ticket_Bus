@@ -1,0 +1,147 @@
+/* styles.css - styles personnalisés pour Bus App */
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f8f9fa;
+    scroll-behavior: smooth;
+}
+
+
+h1, h2, h3, h4 {
+    font-weight: 600;
+}
+
+/* Boutons avec effet */
+.btn-primary {
+    background-color: #0056d2;
+    border: none;
+    transition: all 0.3s ease-in-out;
+}
+.btn-primary:hover {
+    background-color: #003c9e;
+    transform: scale(1.05);
+}
+
+/* ---- CARD STYLING ---- */
+.card {
+    border: none;
+    border-radius: 1rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+/* Icônes */
+.bi {
+    transition: transform 0.2s;
+}
+.bi:hover {
+    transform: scale(1.2);
+}
+
+
+/* ---- BUTTONS ---- */
+.btn-primary {
+    background-color: #1976d2;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #1565c0;
+}
+
+.btn-success {
+    background-color: #388e3c;
+    border: none;
+}
+
+.btn-success:hover {
+    background-color: #2e7d32;
+}
+
+/* ---- ALERTS ---- */
+.alert {
+    border-radius: 0.5rem;
+}
+
+/* ---- NAVBAR ---- */
+.navbar {
+    border-radius: 0 0 20px 20px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.4rem;
+}
+
+.nav-link {
+    color: #fff !important;
+    font-weight: 500;
+}
+
+.nav-link:hover {
+    text-decoration: underline;
+}
+
+/* ---- FORMS ---- */
+.form-control {
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+}
+
+.form-label {
+    font-weight: 500;
+}
+
+.btn {
+    padding: 0.6rem 1.2rem;
+    border-radius: 0.6rem;
+}
+
+/* ---- TICKET LIST ---- */
+.list-group-item {
+    border: none;
+    border-bottom: 1px solid #eee;
+    padding: 1rem 1.2rem;
+    transition: background 0.3s ease;
+}
+
+.list-group-item:hover {
+    background: #f1f8ff;
+}
+
+/* ---- BADGE ---- */
+.badge {
+    font-size: 0.8rem;
+    padding: 0.4em 0.6em;
+    border-radius: 0.4rem;
+}
+
+/* ---- FOOTER (optional) ---- */
+footer {
+    padding: 2rem 0;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #777;
+}
+
+/* ---- ANIMATIONS ---- */
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+.animated.fadeIn {
+    animation: fadeIn 0.8s ease-in-out;
+  }
+
+.animated {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
